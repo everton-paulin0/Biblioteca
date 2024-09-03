@@ -1,4 +1,5 @@
 ﻿using BibliotecaAPI.Entities;
+using BibliotecaAPI.Enum;
 
 namespace BibliotecaAPI.Model
 {
@@ -8,7 +9,7 @@ namespace BibliotecaAPI.Model
         {
             
         }
-        public LivroViewModel(int id, string titulodoLivro, string autordoLivro, string estilodoLivro, bool ativo)
+        public LivroViewModel(int id, string titulodoLivro, string autordoLivro, string estilodoLivro, bool ativo, List<ComentarioLivro> comentarios)
         {
             Id = id;
             TitulodoLivro = titulodoLivro;
@@ -22,6 +23,10 @@ namespace BibliotecaAPI.Model
         public string AutordoLivro { get; set; }
         public string EstilodoLivro { get; set; }
         public bool Ativo { get; set; }
-        public static LivroViewModel FromEntiity(Livro livro) => new LivroViewModel(livro.Id, livro.TitulodoLivro, livro.AutordoLivro, livro.EstilodoLivro, livro.Ativo);
+        public LivroSituacaoEnum Situacao { get; set; }
+        public List<string> Comentarios { get; set; }
+
+        public Livro ToEntity() => new(TitulodoLivro, AutordoLivro, EstilodoLivro, Ativo);
+        public static LivroViewModel FromEntiity(Livro livro) => new LivroViewModel(livro.Id, livro.TitulodoLivro, livro.AutordoLivro, livro.EstilodoLivro, livro.Ativo,livro.Comentarios);
     }
 }

@@ -11,6 +11,7 @@ namespace BibliotecaAPI.Persistência
         }
 
         public DbSet<Livro> Livros { get; set; }
+        public DbSet<ComentarioLivro> ComentariosLivros { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -20,7 +21,20 @@ namespace BibliotecaAPI.Persistência
 
             });
 
+            builder.Entity<ComentarioLivro>(e =>
+            {
+                e.HasKey(c => c.Id);
+
+                e.HasOne(c => c.Livro)
+                .WithMany(c => c.Comentarios)
+                .HasForeignKey(c => c.IdLivro)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            });
+
             base.OnModelCreating(builder);
+
+            
         }
     }
 }

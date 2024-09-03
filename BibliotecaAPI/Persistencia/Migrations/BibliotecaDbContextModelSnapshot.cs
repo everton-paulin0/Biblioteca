@@ -22,6 +22,37 @@ namespace BibliotecaAPI.Persistencia.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("BibliotecaAPI.Entities.ComentarioLivro", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("AtualizadoEm")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Comentario")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CriadoEm")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("EstaDeletado")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("IdLivro")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdLivro");
+
+                    b.ToTable("ComentariosLivros");
+                });
+
             modelBuilder.Entity("BibliotecaAPI.Entities.Livro", b =>
                 {
                     b.Property<int>("Id")
@@ -50,6 +81,9 @@ namespace BibliotecaAPI.Persistencia.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Situacao")
+                        .HasColumnType("int");
+
                     b.Property<string>("TitulodoLivro")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -57,6 +91,22 @@ namespace BibliotecaAPI.Persistencia.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Livros");
+                });
+
+            modelBuilder.Entity("BibliotecaAPI.Entities.ComentarioLivro", b =>
+                {
+                    b.HasOne("BibliotecaAPI.Entities.Livro", "Livro")
+                        .WithMany("Comentarios")
+                        .HasForeignKey("IdLivro")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Livro");
+                });
+
+            modelBuilder.Entity("BibliotecaAPI.Entities.Livro", b =>
+                {
+                    b.Navigation("Comentarios");
                 });
 #pragma warning restore 612, 618
         }

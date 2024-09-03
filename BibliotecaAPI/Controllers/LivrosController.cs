@@ -23,6 +23,7 @@ namespace BibliotecaAPI.Controllers
             var model = livros.Select(l => LivroViewModel.FromEntiity(l)).ToList();
             return Ok(model);
         }
+
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
