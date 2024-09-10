@@ -4,6 +4,7 @@ using BibliotecaAPI.Persistência;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BibliotecaAPI.Persistencia.Migrations
 {
     [DbContext(typeof(BibliotecaDbContext))]
-    partial class BibliotecaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240908114934_PrimeiraMigration")]
+    partial class PrimeiraMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,9 +47,6 @@ namespace BibliotecaAPI.Persistencia.Migrations
                         .HasColumnType("bit");
 
                     b.Property<int>("IdLivro")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdUsuario")
                         .HasColumnType("int");
 
                     b.Property<int>("UsuariosId")
@@ -99,9 +99,12 @@ namespace BibliotecaAPI.Persistencia.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("IdUsuario");
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Livros");
                 });
@@ -127,9 +130,6 @@ namespace BibliotecaAPI.Persistencia.Migrations
                     b.Property<bool>("EstaDeletado")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("LivroId")
-                        .HasColumnType("int");
-
                     b.Property<string>("NomeCompleto")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -139,8 +139,6 @@ namespace BibliotecaAPI.Persistencia.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("LivroId");
 
                     b.ToTable("Usuarios");
                 });
@@ -168,25 +166,16 @@ namespace BibliotecaAPI.Persistencia.Migrations
                 {
                     b.HasOne("BibliotecaAPI.Entities.Usuario", "Usuario")
                         .WithMany("Livros")
-                        .HasForeignKey("IdUsuario")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("BibliotecaAPI.Entities.Usuario", b =>
-                {
-                    b.HasOne("BibliotecaAPI.Entities.Livro", null)
-                        .WithMany("ListaUsuario")
-                        .HasForeignKey("LivroId");
-                });
-
             modelBuilder.Entity("BibliotecaAPI.Entities.Livro", b =>
                 {
                     b.Navigation("Comentarios");
-
-                    b.Navigation("ListaUsuario");
                 });
 
             modelBuilder.Entity("BibliotecaAPI.Entities.Usuario", b =>

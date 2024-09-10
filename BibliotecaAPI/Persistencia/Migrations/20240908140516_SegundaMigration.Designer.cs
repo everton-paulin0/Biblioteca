@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BibliotecaAPI.Persistencia.Migrations
 {
     [DbContext(typeof(BibliotecaDbContext))]
-    [Migration("20240903104148_PrimeiraMigration")]
-    partial class PrimeiraMigration
+    [Migration("20240908140516_SegundaMigration")]
+    partial class SegundaMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,9 +49,17 @@ namespace BibliotecaAPI.Persistencia.Migrations
                     b.Property<int>("IdLivro")
                         .HasColumnType("int");
 
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsuariosId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IdLivro");
+
+                    b.HasIndex("UsuariosId");
 
                     b.ToTable("ComentariosLivros");
                 });
@@ -84,6 +92,9 @@ namespace BibliotecaAPI.Persistencia.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("int");
+
                     b.Property<int>("Situacao")
                         .HasColumnType("int");
 
@@ -93,7 +104,48 @@ namespace BibliotecaAPI.Persistencia.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("IdUsuario");
+
                     b.ToTable("Livros");
+                });
+
+            modelBuilder.Entity("BibliotecaAPI.Entities.Usuario", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("AtualizadoEm")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CriadoEm")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("EstaDeletado")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("LivroId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("NomeCompleto")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Telefone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LivroId");
+
+                    b.ToTable("Usuarios");
                 });
 
             modelBuilder.Entity("BibliotecaAPI.Entities.ComentarioLivro", b =>
@@ -104,12 +156,47 @@ namespace BibliotecaAPI.Persistencia.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("BibliotecaAPI.Entities.Usuario", "Usuarios")
+                        .WithMany("Comentarios")
+                        .HasForeignKey("UsuariosId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Livro");
+
+                    b.Navigation("Usuarios");
+                });
+
+            modelBuilder.Entity("BibliotecaAPI.Entities.Livro", b =>
+                {
+                    b.HasOne("BibliotecaAPI.Entities.Usuario", "Usuario")
+                        .WithMany("Livros")
+                        .HasForeignKey("IdUsuario")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("BibliotecaAPI.Entities.Usuario", b =>
+                {
+                    b.HasOne("BibliotecaAPI.Entities.Livro", null)
+                        .WithMany("ListaUsuario")
+                        .HasForeignKey("LivroId");
                 });
 
             modelBuilder.Entity("BibliotecaAPI.Entities.Livro", b =>
                 {
                     b.Navigation("Comentarios");
+
+                    b.Navigation("ListaUsuario");
+                });
+
+            modelBuilder.Entity("BibliotecaAPI.Entities.Usuario", b =>
+                {
+                    b.Navigation("Comentarios");
+
+                    b.Navigation("Livros");
                 });
 #pragma warning restore 612, 618
         }

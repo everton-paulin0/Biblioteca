@@ -10,26 +10,26 @@ namespace BibliotecaAPI.Model
             
         }
 
-        public CriadoLivroInputModel(string titulodoLivro, string autordoLivro, string estilodoLivro, bool ativo, LivroSituacaoEnum situacao, List<string> comentarios)
+        public CriadoLivroInputModel(string titulodoLivro, string autordoLivro, string estilodoLivro,bool ativo, LivroSituacaoEnum situacao, int idUsuario)
         {
             TitulodoLivro = titulodoLivro;
             AutordoLivro = autordoLivro;
             EstilodoLivro = estilodoLivro;
             Ativo = ativo;
             Situacao = situacao;
-            Comentarios = comentarios;
+            IdUsuario = idUsuario;
+            
         }
 
         public string TitulodoLivro { get; set; }
         public string AutordoLivro { get; set; }
         public string EstilodoLivro { get; set; }
+        public int IdUsuario { get; set; }
+        
         public bool Ativo { get; set; }
         public LivroSituacaoEnum Situacao { get; set; }
-        public List<string> Comentarios { get; set; }
-
-
-
-        public Livro ToEntity() => new(TitulodoLivro, AutordoLivro, EstilodoLivro, Ativo);
+        
+        public Livro ToEntity() => new(TitulodoLivro, AutordoLivro, EstilodoLivro, Ativo, IdUsuario);
         
     }
 }

@@ -4,6 +4,7 @@
     {
         public string Comentario { get; set; }
         public int IdLivro { get; set; }
+        public int IdUser { get; set; }
 
     }
 }
