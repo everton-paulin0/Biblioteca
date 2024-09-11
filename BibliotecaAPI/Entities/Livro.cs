@@ -56,7 +56,7 @@ namespace BibliotecaAPI.Entities
 
         public void Livre()
         {
-            if (Situacao == LivroSituacaoEnum.Livre)
+            if (Situacao != LivroSituacaoEnum.Livre)
             {
                 Situacao = LivroSituacaoEnum.Livre;
                 AtualizadoEm = DateTime.Now;
@@ -65,7 +65,7 @@ namespace BibliotecaAPI.Entities
 
         public void Perdido()
         {
-            if (Situacao == LivroSituacaoEnum.Perdido)
+            if (Situacao != LivroSituacaoEnum.Perdido)
             {
                 Situacao = LivroSituacaoEnum.Perdido;
                 AtualizadoEm = DateTime.Now;
@@ -74,7 +74,7 @@ namespace BibliotecaAPI.Entities
 
         public void Emprestado()
         {
-            if (Situacao == LivroSituacaoEnum.Emprestado)
+            if (Situacao != LivroSituacaoEnum.Emprestado)
             {
                 Situacao = LivroSituacaoEnum.Emprestado;
                 AtualizadoEm = DateTime.Now;

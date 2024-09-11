@@ -35,7 +35,7 @@ namespace BibliotecaAPI.Controllers
         [HttpPost]
         public IActionResult Post(CriacaoUsuarioInputModel model)
         {
-            var usuario = new Usuario(model.NomeCompleto, model.Email, model.telefone);
+            var usuario = new Usuario(model.NomeCompleto, model.Email, model.telefone, model.LivroId);
 
             _context.Usuarios.Add(usuario);
             _context.SaveChanges();
